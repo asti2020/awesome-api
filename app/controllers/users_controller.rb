@@ -1,18 +1,14 @@
 class UsersController < ApplicationController
-    before_action :authorized, only: [:show, :create, :update, :destroy]
+    protect_from_forgery
 
-    def get
-        @users = User.all
-        render json: @users, status: 200
-    end
 
     def create
-            @user = User.create(user_params)
+            @user = User.create(:username => params[:name], :email => params[:email], :password => params[:password])
             render json: @user, status: :created
     end
 
-private
-    def user_params
-        params.require(:user).permit(:username, :password)
+    def index
+        @user = User.all
+        render json: @user, status: :ok
     end
 end
