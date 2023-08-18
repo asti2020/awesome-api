@@ -3,8 +3,8 @@ class UsersController < ApplicationController
 
 
     def create
-            @user = User.create(:username => params[:name], :email => params[:email], :password => params[:password])
-            render json: @user, status: :created
+            user = User.create(:username => params[:username], :email => params[:email], :password => params[:password])
+            render json: {user: UserSerializer.new(user)}, status: :created
     end
 
     def index
