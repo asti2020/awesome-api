@@ -4,19 +4,22 @@ class ApplicationController < ActionController::Base
 
 
     def encode_token(playload)
-        # JWT.encode(playload, Rails.application.secrets.secret_key_base, 'HS256')
-        JWT.encode(playload, 'awsome101')
+        JWT.encode(playload, Rails.application.secrets.secret_key_base, 'HS256')
+
     end
 
-    def decoded_token
-        header = request.headers['Authorization']
+    def decoded_token()
+        header = request.headers['authorization']
         if header
             token = header.split(" ")[1]
             begin
-                JWT.decode(token, 'awsome101')
-                rescure JWT::DecodeError
-                nil
+                decoded_token = JWT.decode(token, Rails.application.secrets.secret_key_base, true, {algorithm: 'HS256'})
+                return decoded_token
             end
+            #     JWT.decode(token, Rails.application.secrets.secret_key_base, 'HS256')
+            #     rescure JWT::DecodeError 
+            #     nil
+            # end
         end
     end
 
